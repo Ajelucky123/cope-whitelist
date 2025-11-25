@@ -4,7 +4,7 @@ import { getRank } from '@/lib/storage'
 
 export async function GET() {
   try {
-    const users = getLeaderboard(100)
+    const users = await getLeaderboard(100)
     
     const leaderboard = users.map((user, index) => ({
       rank: index + 1,
