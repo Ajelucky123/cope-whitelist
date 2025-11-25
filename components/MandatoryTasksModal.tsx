@@ -26,110 +26,29 @@ export default function MandatoryTasksModal({ isOpen, onComplete }: MandatoryTas
   }, [isOpen])
 
   const handleXClick = () => {
-    // Open X link in new tab
     window.open('https://x.com/COPE_on_BNB', '_blank', 'noopener,noreferrer')
-    
-    // Start verification process after a delay
-    setTimeout(() => {
-      verifyXFollow()
-    }, 2000)
-  }
-
-  const verifyXFollow = async () => {
     setVerifyingX(true)
     setXError('')
 
-    try {
-      // Show instructions and verification prompt
-      const instructions = 
-        'To verify you followed @COPE_on_BNB:\n\n' +
-        '1. Make sure you have followed the account\n' +
-        '2. Click OK to confirm\n' +
-        '3. Or Cancel to follow now\n\n' +
-        'Note: Full automatic verification requires X OAuth integration.'
-      
-      const userConfirmed = window.confirm(instructions)
-
-      if (userConfirmed) {
-        // In production, this would call the X API to verify
-        // For now, we store the verification
-        localStorage.setItem('cope_x_verified', 'true')
-        localStorage.setItem('cope_x_verified_time', new Date().toISOString())
-        setFollowComplete(true)
-        setXError('')
-      } else {
-        setXError('Please follow @COPE_on_BNB on X first, then click the button again.')
-      }
-    } catch (error) {
-      setXError('Verification failed. Please try again.')
-    } finally {
+    setTimeout(() => {
+      localStorage.setItem('cope_x_verified', 'true')
+      localStorage.setItem('cope_x_verified_time', new Date().toISOString())
+      setFollowComplete(true)
       setVerifyingX(false)
-    }
+    }, 15000)
   }
 
   const handleTGClick = () => {
-    // Open Telegram link in new tab
     window.open('https://t.me/COPEonBNB', '_blank', 'noopener,noreferrer')
-    
-    // Start verification process after a delay
-    setTimeout(() => {
-      verifyTelegram()
-    }, 2000)
-  }
-
-  const verifyTelegram = async () => {
     setVerifyingTG(true)
     setTgError('')
 
-    try {
-      // Ask for Telegram User ID (required by Telegram Bot API)
-      const instructions = 
-        'To verify your Telegram membership:\n\n' +
-        '1. Make sure you have joined @COPEonBNB on Telegram\n' +
-        '2. Open Telegram and message @userinfobot\n' +
-        '3. Copy your User ID (the number)\n' +
-        '4. Paste it below\n\n' +
-        'Click Cancel if you need to join the channel first.'
-      
-      const telegramUserId = prompt(instructions)
-
-      if (!telegramUserId) {
-        setTgError('Please join @COPEonBNB on Telegram first, then try again.')
-        return
-      }
-
-      // Validate user ID is numeric
-      if (!/^\d+$/.test(telegramUserId.trim())) {
-        setTgError('Invalid User ID. Please enter only numbers (e.g., 123456789).')
-        return
-      }
-
-      // Verify membership via API
-      const response = await fetch('/api/verifyTelegram', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: telegramUserId.trim() }),
-      })
-
-      const data = await response.json()
-
-      if (data.isMember) {
-        localStorage.setItem('cope_tg_verified', 'true')
-        localStorage.setItem('cope_tg_verified_time', new Date().toISOString())
-        localStorage.setItem('cope_tg_user_id', data.userId || telegramUserId.trim())
-        setJoinComplete(true)
-        setTgError('')
-      } else {
-        setTgError(data.error || 'Could not verify membership. Make sure you have joined @COPEonBNB on Telegram.')
-      }
-    } catch (error: any) {
-      console.error('Telegram verification error:', error)
-      setTgError('Verification failed. Please try again or contact support.')
-    } finally {
+    setTimeout(() => {
+      localStorage.setItem('cope_tg_verified', 'true')
+      localStorage.setItem('cope_tg_verified_time', new Date().toISOString())
+      setJoinComplete(true)
       setVerifyingTG(false)
-    }
+    }, 15000)
   }
 
   const handleVerify = () => {
