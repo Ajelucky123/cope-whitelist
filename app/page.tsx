@@ -1,11 +1,25 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import MandatoryTasksModal from '@/components/MandatoryTasksModal'
 import WalletEntry from '@/components/WalletEntry'
 
 export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center text-gray-400">
+          Loading COPE rites...
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
+  )
+}
+
+function HomeContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [showTasksModal, setShowTasksModal] = useState(false)
