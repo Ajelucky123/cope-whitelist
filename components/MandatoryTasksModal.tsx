@@ -82,70 +82,51 @@ export default function MandatoryTasksModal({ isOpen, onComplete }: MandatoryTas
     setTgError('')
 
     try {
-      // First, try to get Telegram user ID via prompt
+      // Ask for Telegram User ID (required by Telegram Bot API)
       const instructions = 
-        'To verify Telegram membership:\n\n' +
-        'Option 1 (Automatic):\n' +
-        '1. Open Telegram and message @userinfobot\n' +
-        '2. Copy your User ID (the number)\n' +
-        '3. Paste it below\n\n' +
-        'Option 2 (Manual):\n' +
-        'Click Cancel and confirm manually'
+        'To verify your Telegram membership:\n\n' +
+        '1. Make sure you have joined @COPEonBNB on Telegram\n' +
+        '2. Open Telegram and message @userinfobot\n' +
+        '3. Copy your User ID (the number)\n' +
+        '4. Paste it below\n\n' +
+        'Click Cancel if you need to join the channel first.'
       
       const telegramUserId = prompt(instructions)
 
-      if (telegramUserId && /^\d+$/.test(telegramUserId)) {
-        // Try API verification
-        const response = await fetch('/api/verifyTelegram', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId: telegramUserId }),
-        })
-
-        const data = await response.json()
-
-        if (data.isMember) {
-          localStorage.setItem('cope_tg_verified', 'true')
-          localStorage.setItem('cope_tg_verified_time', new Date().toISOString())
-          setJoinComplete(true)
-          setTgError('')
-          return
-        } else {
-          // API verification failed, fall back to manual
-          setTgError('Could not verify automatically. Please verify manually.')
-        }
+      if (!telegramUserId) {
+        setTgError('Please join @COPEonBNB on Telegram first, then try again.')
+        return
       }
 
-      // Manual verification fallback
-      const userConfirmed = window.confirm(
-        'Have you joined the COPE Community on Telegram (@COPEonBNB)?\n\n' +
-        'Click OK if you have joined, or Cancel to join now.'
-      )
-      
-      if (userConfirmed) {
+      // Validate user ID is numeric
+      if (!/^\d+$/.test(telegramUserId.trim())) {
+        setTgError('Invalid User ID. Please enter only numbers (e.g., 123456789).')
+        return
+      }
+
+      // Verify membership via API
+      const response = await fetch('/api/verifyTelegram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: telegramUserId.trim() }),
+      })
+
+      const data = await response.json()
+
+      if (data.isMember) {
         localStorage.setItem('cope_tg_verified', 'true')
         localStorage.setItem('cope_tg_verified_time', new Date().toISOString())
+        localStorage.setItem('cope_tg_user_id', data.userId || telegramUserId.trim())
         setJoinComplete(true)
         setTgError('')
       } else {
-        setTgError('Please join @COPEonBNB on Telegram first, then click the button again.')
+        setTgError(data.error || 'Could not verify membership. Make sure you have joined @COPEonBNB on Telegram.')
       }
-    } catch (error) {
-      // Error fallback to manual verification
-      const userConfirmed = window.confirm(
-        'Verification error. Have you joined the COPE Community on Telegram?\n\nClick OK if you have joined.'
-      )
-      
-      if (userConfirmed) {
-        localStorage.setItem('cope_tg_verified', 'true')
-        localStorage.setItem('cope_tg_verified_time', new Date().toISOString())
-        setJoinComplete(true)
-        setTgError('')
-      } else {
-        setTgError('Please join @COPEonBNB on Telegram and try again.')
-      }
+    } catch (error: any) {
+      console.error('Telegram verification error:', error)
+      setTgError('Verification failed. Please try again or contact support.')
     } finally {
       setVerifyingTG(false)
     }
