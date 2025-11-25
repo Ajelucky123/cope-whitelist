@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COPE PAIN Checker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="floating-background" class="floating-background"></div>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="images/image.png" alt="COPE Logo" class="logo" onerror="this.style.display='none'">
+            </div>
+            <h1 class="title">COPE PAIN Checker</h1>
+            <p class="subtitle">Discover your crypto survival score</p>
+        </header>
+
+        <div id="connect-section" class="connect-section">
+            <button id="connect-btn" class="connect-btn">
+                <svg class="x-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+                Connect X Account
+            </button>
+        </div>
+
+        <div id="cope-card-section" class="cope-card-section hidden">
+            <div class="cope-card">
+                <div class="card-header">
+                    <div class="profile-section">
+                        <img id="profile-image" class="profile-image" src="" alt="Profile">
+                        <div class="profile-info">
+                            <h2 id="username" class="username">@username</h2>
+                            <p id="account-age" class="account-age">Account Age: <span id="age-years">0</span> years</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="score-section">
+                        <div class="score-label">COPE PAIN</div>
+                        <div id="cope-pain-score" class="cope-pain-score">0</div>
+                        <div id="pain-tier" class="pain-tier">Fresh Coper</div>
+                    </div>
+
+                    <div class="eras-section">
+                        <h3 class="section-title">Eras Survived</h3>
+                        <div id="eras-list" class="eras-list"></div>
+                    </div>
+
+                    <div class="wisdom-section">
+                        <h3 class="section-title">Cope Wisdom</h3>
+                        <p id="cope-wisdom" class="cope-wisdom"></p>
+                    </div>
+                </div>
+
+                <div class="referral-section">
+                    <div class="referral-title">Share Your COPE PAIN</div>
+                    <div class="referral-link-container">
+                        <input type="text" id="referral-link" class="referral-link" readonly value="">
+                        <button id="copy-btn" class="copy-btn">Copy</button>
+                    </div>
+                    <div class="referral-note">Share this link to let others check their COPE PAIN</div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="cope-branding">COPE</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
