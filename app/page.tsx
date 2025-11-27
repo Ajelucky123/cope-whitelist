@@ -25,6 +25,7 @@ function HomeContent() {
   const [showTasksModal, setShowTasksModal] = useState(false)
   const [tasksCompleted, setTasksCompleted] = useState(false)
   const [walletAddress, setWalletAddress] = useState<string | null>(null)
+  const [hasEnteredWhitelist, setHasEnteredWhitelist] = useState(false)
 
   useEffect(() => {
     const checkUserStatus = async () => {
@@ -58,6 +59,12 @@ function HomeContent() {
       }
     }
 
+    const enteredBefore = localStorage.getItem('cope_entered_whitelist') === 'true'
+    const tasksDoneStored = localStorage.getItem('cope_tasks_completed') === 'true'
+    if (enteredBefore || tasksDoneStored) {
+      setHasEnteredWhitelist(true)
+    }
+
     checkUserStatus()
   }, [router, searchParams])
 
@@ -69,6 +76,35 @@ function HomeContent() {
   const handleWalletSubmitted = (address: string) => {
     setWalletAddress(address)
     router.push('/dashboard')
+  }
+
+  const handleEnterWhitelist = () => {
+    setHasEnteredWhitelist(true)
+    localStorage.setItem('cope_entered_whitelist', 'true')
+  }
+
+  if (!hasEnteredWhitelist) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 text-center relative z-10">
+        <div className="max-w-3xl w-full bg-black bg-opacity-40 border border-cope-orange border-opacity-40 rounded-3xl p-10 shadow-[0_0_40px_rgba(255,122,0,0.25)] backdrop-blur">
+          <h1 className="text-4xl sm:text-5xl font-black text-white mb-6 tracking-tight">
+            Welcome to COPE.
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-300 leading-relaxed whitespace-pre-line mb-8">
+            {`The movement for everyone who has suffered in crypto… and stayed.\n\nJoin the COPE PAIN Whitelist.\n\nNo airdrops. No promises. No roadmap.\n\nJust vibes, trauma, and a community of resilient degenerates.`}
+          </p>
+          <button
+            onClick={handleEnterWhitelist}
+            className="px-8 py-3 bg-gradient-to-r from-cope-orange to-cope-orange-light text-black font-bold rounded-2xl hover:opacity-90 transition text-lg"
+          >
+            Enter Whitelist
+          </button>
+          <div className="mt-8 text-sm text-gray-400 leading-relaxed whitespace-pre-line">
+            {`COPE is a social experiment built on the Binance Smart Chain.\n\nIf you’ve ever lost money, got rugged, held the top, froze an account,\nor believed “this time is different”…\nyou belong here.`}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -86,7 +122,7 @@ function HomeContent() {
             COPE PAIN Whitelist
           </h1>
           <p className="text-gray-400 text-lg">
-            Complete the COPE rituals to enter the Whitelist
+            COPE is a movement where people embrace the pain of being in crypto.\n Join the movement
           </p>
         </header>
 
