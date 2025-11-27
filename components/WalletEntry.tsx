@@ -67,8 +67,12 @@ export default function WalletEntry({ onWalletSubmitted }: WalletEntryProps) {
         Enter Your EVM Wallet
       </h2>
       <p className="text-gray-400 text-center mb-6">
-        Enter your EVM wallet to join the COPE PAIN Whitelist.
+        Enter your EVM/BNB wallet address to join the COPE PAIN Whitelist. No rewards. No tokens. No bribes. This is pure identity.
       </p>
+      <div className="bg-black bg-opacity-40 border border-gray-800 rounded-xl p-4 text-sm text-gray-400 mb-6 leading-relaxed">
+        <p>Your wallet address is used only to identify you. COPE never asks for private keys.</p>
+        <p className="mt-2 text-gray-500">If someone does — they’re coping harder than you.</p>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
