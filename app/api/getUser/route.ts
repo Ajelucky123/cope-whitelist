@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const user = getUserByWallet(walletAddress)
+    const user = await getUserByWallet(walletAddress)
     
     if (!user) {
       return NextResponse.json(
