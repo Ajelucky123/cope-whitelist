@@ -35,7 +35,7 @@ export default function MandatoryTasksModal({ isOpen, onComplete }: MandatoryTas
       localStorage.setItem('cope_x_verified_time', new Date().toISOString())
       setFollowComplete(true)
       setVerifyingX(false)
-    }, 15000)
+    }, 45000)
   }
 
   const handleTGClick = () => {
@@ -48,7 +48,7 @@ export default function MandatoryTasksModal({ isOpen, onComplete }: MandatoryTas
       localStorage.setItem('cope_tg_verified_time', new Date().toISOString())
       setJoinComplete(true)
       setVerifyingTG(false)
-    }, 15000)
+    }, 45000)
   }
 
   const handleVerify = () => {

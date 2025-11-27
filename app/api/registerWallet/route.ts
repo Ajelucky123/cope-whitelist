@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     // Validate EVM address format
     if (!/^0x[a-fA-F0-9]{40}$/.test(walletAddress)) {
       return NextResponse.json(
-        { error: 'Invalid EVM wallet address' },
+        { error: 'Invalid BNB Chain wallet address' },
         { status: 400 }
       )
     }
