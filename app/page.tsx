@@ -29,7 +29,6 @@ function HomeContent() {
 
   useEffect(() => {
     const checkUserStatus = async () => {
-      // Check if user has completed tasks
       const tasksDone = localStorage.getItem('cope_tasks_completed') === 'true'
       setTasksCompleted(tasksDone)
 
@@ -122,7 +121,7 @@ function HomeContent() {
             COPE PAIN Whitelist
           </h1>
           <p className="text-gray-400 text-lg">
-            COPE is a movement where people embrace the pain of being in crypto.\n Join the movement
+            COPE is a movement where people embrace the pain of being in crypto.
           </p>
         </header>
 
