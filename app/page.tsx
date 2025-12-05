@@ -152,7 +152,7 @@ export default function Home() {
 
           {/* Text Below Image */}
           <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-semibold mb-6 text-white" style={{ fontFamily: 'cursive' }}>
+            <h1 className="text-6xl md:text-8xl font-semibold mb-6 text-white">
               COPE
             </h1>
             <p className="text-2xl md:text-3xl font-semibold text-gray-300 mb-8">
@@ -214,10 +214,10 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left: Text */}
             <div>
-              <h2 className="text-5xl md:text-7xl font-semibold mb-8 text-white" style={{ fontFamily: 'cursive' }}>
+              <h2 className="text-5xl md:text-7xl font-semibold mb-8 text-white">
                 ABOUT COPE
               </h2>
-              <div className="space-y-4 text-lg font-semibold text-gray-300" style={{ fontFamily: 'cursive' }}>
+              <div className="space-y-4 text-lg font-semibold text-gray-300">
                 <p>Bros are coping hard. They aren't just sharing their pain stories.</p>
                 <p>Now $COPE is Live on BNB-chain, transforming losses into laughter, setbacks into shared wisdom, and collective pain into a movement spreading hope, smiles, and pure WTF energy across Web3.</p>
                 <p className="text-cope-orange font-semibold">$COPE - the shared pain of crypto bros.</p>
@@ -263,7 +263,7 @@ export default function Home() {
 
             {/* Tokenomics text (above on mobile, right on desktop) */}
             <div className="order-1 md:order-2">
-              <h2 className="text-5xl md:text-7xl font-semibold mb-8 text-white" style={{ fontFamily: 'cursive' }}>
+              <h2 className="text-5xl md:text-7xl font-semibold mb-8 text-white">
                 TOKENOMICS
               </h2>
               <div className="space-y-6">
@@ -324,7 +324,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left: Instructions */}
             <div>
-              <h2 className="text-5xl md:text-7xl font-semibold mb-8 text-white" style={{ fontFamily: 'cursive' }}>
+              <h2 className="text-5xl md:text-7xl font-semibold mb-8 text-white">
                 HOW TO BUY
               </h2>
               <div className="space-y-6 text-lg font-semibold">
