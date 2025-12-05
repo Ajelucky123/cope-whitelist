@@ -152,10 +152,10 @@ export default function Home() {
 
           {/* Text Below Image */}
           <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-black mb-6 text-white" style={{ fontFamily: 'cursive' }}>
+            <h1 className="text-6xl md:text-8xl font-semibold mb-6 text-white" style={{ fontFamily: 'cursive' }}>
               COPE
             </h1>
-            <p className="text-2xl md:text-3xl text-gray-300 mb-8">
+            <p className="text-2xl md:text-3xl font-semibold text-gray-300 mb-8">
               from pain to movement
             </p>
             
@@ -199,10 +199,10 @@ export default function Home() {
       {/* Diagonal Banner */}
       <div className="py-4 bg-cope-orange bg-opacity-20 border-y border-cope-orange border-opacity-30 overflow-hidden">
         <div className="flex whitespace-nowrap animate-scroll">
-          <span className="inline-block text-black font-black text-xl mx-4">
+          <span className="inline-block text-black font-semibold text-xl mx-4">
             COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE
           </span>
-          <span className="inline-block text-black font-black text-xl mx-4">
+          <span className="inline-block text-black font-semibold text-xl mx-4">
             COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE
           </span>
         </div>
@@ -214,14 +214,14 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left: Text */}
             <div>
-              <h2 className="text-5xl md:text-7xl font-black mb-8 text-white" style={{ fontFamily: 'cursive' }}>
+              <h2 className="text-5xl md:text-7xl font-semibold mb-8 text-white" style={{ fontFamily: 'cursive' }}>
                 ABOUT COPE
               </h2>
-              <div className="space-y-4 text-lg text-gray-300" style={{ fontFamily: 'cursive' }}>
+              <div className="space-y-4 text-lg font-semibold text-gray-300" style={{ fontFamily: 'cursive' }}>
                 <p>Bros are coping hard. They aren't just sharing their pain stories.</p>
                 <p>Now $COPE is Live on BNB-chain, transforming losses into laughter, setbacks into shared wisdom, and collective pain into a movement spreading hope, smiles, and pure WTF energy across Web3.</p>
-                <p className="text-cope-orange font-bold">$COPE - the shared pain of crypto bros.</p>
-                <p className="text-sm text-gray-400">email: support@copehard.xyz</p>
+                <p className="text-cope-orange font-semibold">$COPE - the shared pain of crypto bros.</p>
+                <p className="text-sm font-semibold text-gray-400">email: support@copehard.xyz</p>
               </div>
             </div>
 
@@ -263,53 +263,53 @@ export default function Home() {
 
             {/* Tokenomics text (above on mobile, right on desktop) */}
             <div className="order-1 md:order-2">
-              <h2 className="text-5xl md:text-7xl font-black mb-8 text-white" style={{ fontFamily: 'cursive' }}>
+              <h2 className="text-5xl md:text-7xl font-semibold mb-8 text-white" style={{ fontFamily: 'cursive' }}>
                 TOKENOMICS
               </h2>
               <div className="space-y-6">
-                <div className="text-4xl font-black text-cope-orange mb-4">
+                <div className="text-4xl font-semibold text-cope-orange mb-4">
                   100,000,000
                 </div>
-                <p className="text-xl text-gray-300 mb-6">Total Supply</p>
+                <p className="text-xl font-semibold text-gray-300 mb-6">Total Supply</p>
                 
-                <div className="space-y-3 text-lg">
+                <div className="space-y-3 text-lg font-semibold">
                   <div className="flex justify-between items-center p-3 bg-black bg-opacity-40 rounded-lg border border-cope-orange border-opacity-20">
-                    <span className="text-gray-300">32.5%</span>
+                    <span className="text-gray-300 font-semibold">32.5%</span>
                     <span className="text-white font-semibold">Airdrop</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-black bg-opacity-40 rounded-lg border border-cope-orange border-opacity-20">
-                    <span className="text-gray-300">25%</span>
+                    <span className="text-gray-300 font-semibold">25%</span>
                     <span className="text-white font-semibold">CZ wallet</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-black bg-opacity-40 rounded-lg border border-cope-orange border-opacity-20">
-                    <span className="text-gray-300">15%</span>
+                    <span className="text-gray-300 font-semibold">15%</span>
                     <span className="text-white font-semibold">Presale</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-black bg-opacity-40 rounded-lg border border-cope-orange border-opacity-20">
-                    <span className="text-gray-300">12.5%</span>
+                    <span className="text-gray-300 font-semibold">12.5%</span>
                     <span className="text-white font-semibold">Initial LP</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-black bg-opacity-40 rounded-lg border border-cope-orange border-opacity-20">
-                    <span className="text-gray-300">10%</span>
+                    <span className="text-gray-300 font-semibold">10%</span>
                     <span className="text-white font-semibold">Marketing</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-black bg-opacity-40 rounded-lg border border-cope-orange border-opacity-20">
-                    <span className="text-gray-300">5%</span>
+                    <span className="text-gray-300 font-semibold">5%</span>
                     <span className="text-white font-semibold">Team</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 mt-6">
                   <div className="bg-cope-orange bg-opacity-20 p-4 rounded-lg border border-cope-orange border-opacity-40 text-center">
-                    <div className="text-sm text-gray-300 mb-2">BUY TAX</div>
-                    <div className="text-2xl font-black text-cope-orange">5%</div>
+                    <div className="text-sm font-semibold text-gray-300 mb-2">BUY TAX</div>
+                    <div className="text-2xl font-semibold text-cope-orange">5%</div>
                   </div>
                   <div className="bg-cope-orange bg-opacity-20 p-4 rounded-lg border border-cope-orange border-opacity-40 text-center">
-                    <div className="text-sm text-gray-300 mb-2">SELL TAX</div>
-                    <div className="text-2xl font-black text-cope-orange">5%</div>
+                    <div className="text-sm font-semibold text-gray-300 mb-2">SELL TAX</div>
+                    <div className="text-2xl font-semibold text-cope-orange">5%</div>
                   </div>
                 </div>
-                <p className="text-sm text-gray-400 mt-4 text-center">
+                <p className="text-sm font-semibold text-gray-400 mt-4 text-center">
                   Auto buy back & burn every month.
                 </p>
               </div>
@@ -324,29 +324,29 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left: Instructions */}
             <div>
-              <h2 className="text-5xl md:text-7xl font-black mb-8 text-white" style={{ fontFamily: 'cursive' }}>
+              <h2 className="text-5xl md:text-7xl font-semibold mb-8 text-white" style={{ fontFamily: 'cursive' }}>
                 HOW TO BUY
               </h2>
-              <div className="space-y-6 text-lg">
+              <div className="space-y-6 text-lg font-semibold">
                 <div>
-                  <div className="text-2xl font-bold text-cope-orange mb-2">1. Get a Wallet</div>
-                  <p className="text-gray-300">Download MetaMask or Trust Wallet.</p>
-                  <p className="text-gray-300">Switch network to BNB Smart Chain (BSC).</p>
+                  <div className="text-2xl font-semibold text-cope-orange mb-2">1. Get a Wallet</div>
+                  <p className="text-gray-300 font-semibold">Download MetaMask or Trust Wallet.</p>
+                  <p className="text-gray-300 font-semibold">Switch network to BNB Smart Chain (BSC).</p>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-cope-orange mb-2">2. Buy BNB</div>
-                  <p className="text-gray-300">Purchase BNB directly in your wallet or through your favorite exchange.</p>
+                  <div className="text-2xl font-semibold text-cope-orange mb-2">2. Buy BNB</div>
+                  <p className="text-gray-300 font-semibold">Purchase BNB directly in your wallet or through your favorite exchange.</p>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-cope-orange mb-2">3. Go to PancakeSwap</div>
-                  <p className="text-gray-300">Connect wallet → Paste contract →</p>
-                  <p className="font-mono text-sm text-cope-orange break-all">{contractAddress}</p>
+                  <div className="text-2xl font-semibold text-cope-orange mb-2">3. Go to PancakeSwap</div>
+                  <p className="text-gray-300 font-semibold">Connect wallet → Paste contract →</p>
+                  <p className="font-mono text-sm font-semibold text-cope-orange break-all">{contractAddress}</p>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-cope-orange mb-2">4. Swap</div>
-                  <p className="text-gray-300">Select BNB → $COPE, set slippage to 6%+, and hit SWAP.</p>
+                  <div className="text-2xl font-semibold text-cope-orange mb-2">4. Swap</div>
+                  <p className="text-gray-300 font-semibold">Select BNB → $COPE, set slippage to 6%+, and hit SWAP.</p>
                 </div>
-                <p className="text-xl text-cope-orange font-bold mt-6">
+                <p className="text-xl font-semibold text-cope-orange mt-6">
                   Welcome to the COPE movement!
                 </p>
               </div>
@@ -382,10 +382,10 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="py-4 bg-cope-orange bg-opacity-20 border-y border-cope-orange border-opacity-30 overflow-hidden mb-12">
             <div className="flex whitespace-nowrap animate-scroll">
-              <span className="inline-block text-white font-black text-xl mx-4">
+              <span className="inline-block text-white font-semibold text-xl mx-4">
                 JOIN COPE MOVEMENT • JOIN COPE MOVEMENT • JOIN COPE MOVEMENT • JOIN COPE MOVEMENT • JOIN COPE MOVEMENT • JOIN COPE MOVEMENT
               </span>
-              <span className="inline-block text-white font-black text-xl mx-4">
+              <span className="inline-block text-white font-semibold text-xl mx-4">
                 JOIN COPE MOVEMENT • JOIN COPE MOVEMENT • JOIN COPE MOVEMENT • JOIN COPE MOVEMENT • JOIN COPE MOVEMENT • JOIN COPE MOVEMENT
               </span>
             </div>
@@ -408,7 +408,7 @@ export default function Home() {
             href="/whitelist"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-10 py-4 bg-gradient-to-r from-cope-orange to-cope-orange-light text-black font-black rounded-2xl hover:opacity-90 transition text-xl shadow-[0_0_30px_rgba(255,122,0,0.4)]"
+            className="inline-block px-10 py-4 bg-gradient-to-r from-cope-orange to-cope-orange-light text-black font-semibold rounded-2xl hover:opacity-90 transition text-xl shadow-[0_0_30px_rgba(255,122,0,0.4)]"
           >
             JOIN COPE PAIN WHITELIST
           </Link>
@@ -418,10 +418,10 @@ export default function Home() {
       {/* Footer Banner */}
       <div className="py-4 bg-cope-orange bg-opacity-20 border-y border-cope-orange border-opacity-30 overflow-hidden">
         <div className="flex whitespace-nowrap animate-scroll">
-          <span className="inline-block text-black font-black text-xl mx-4">
+          <span className="inline-block text-black font-semibold text-xl mx-4">
             COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE
           </span>
-          <span className="inline-block text-black font-black text-xl mx-4">
+          <span className="inline-block text-black font-semibold text-xl mx-4">
             COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE • COPE
           </span>
         </div>
