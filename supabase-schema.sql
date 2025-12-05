@@ -4,12 +4,24 @@
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   wallet_address TEXT UNIQUE NOT NULL,
+  name TEXT,
   referral_code TEXT UNIQUE NOT NULL,
   referred_by UUID REFERENCES users(id),
   referral_count INTEGER DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Add name column if it doesn't exist (for existing databases)
+DO $$ 
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'users' AND column_name = 'name'
+  ) THEN
+    ALTER TABLE users ADD COLUMN name TEXT;
+  END IF;
+END $$;
 
 -- Referrals table
 CREATE TABLE IF NOT EXISTS referrals (
