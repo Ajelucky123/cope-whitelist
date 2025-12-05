@@ -152,10 +152,10 @@ export default function Home() {
 
           {/* Text Below Image */}
           <div className="text-center">
-            <h1 className="text-6xl md:text-8xl font-black mb-6 text-white" style={{ fontFamily: 'cursive' }}>
+            <h1 className="text-8xl font-black mb-6 text-white" style={{ fontFamily: 'cursive' }}>
               COPE
             </h1>
-            <p className="text-2xl md:text-3xl text-gray-300 mb-8">
+            <p className="text-3xl text-gray-300 mb-8">
               from pain to movement
             </p>
             
@@ -214,7 +214,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left: Text */}
             <div>
-              <h2 className="text-5xl md:text-7xl font-black mb-8 text-white" style={{ fontFamily: 'cursive' }}>
+              <h2 className="text-7xl font-black mb-8 text-white" style={{ fontFamily: 'cursive' }}>
                 ABOUT COPE
               </h2>
               <div className="space-y-4 text-lg text-gray-300" style={{ fontFamily: 'cursive' }}>
@@ -263,7 +263,7 @@ export default function Home() {
 
             {/* Tokenomics text (above on mobile, right on desktop) */}
             <div className="order-1 md:order-2">
-              <h2 className="text-5xl md:text-7xl font-black mb-8 text-white" style={{ fontFamily: 'cursive' }}>
+              <h2 className="text-7xl font-black mb-8 text-white" style={{ fontFamily: 'cursive' }}>
                 TOKENOMICS
               </h2>
               <div className="space-y-6">
@@ -324,7 +324,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left: Instructions */}
             <div>
-              <h2 className="text-5xl md:text-7xl font-black mb-8 text-white" style={{ fontFamily: 'cursive' }}>
+              <h2 className="text-7xl font-black mb-8 text-white" style={{ fontFamily: 'cursive' }}>
                 HOW TO BUY
               </h2>
               <div className="space-y-6 text-lg">
