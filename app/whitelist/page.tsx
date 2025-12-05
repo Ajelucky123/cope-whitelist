@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import MandatoryTasksModal from '@/components/MandatoryTasksModal'
 import WalletEntry from '@/components/WalletEntry'
 
@@ -86,6 +87,14 @@ function WhitelistContent() {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 text-center relative z-10">
         <div className="max-w-3xl w-full bg-black bg-opacity-40 border border-cope-orange border-opacity-40 rounded-3xl p-10 shadow-[0_0_40px_rgba(255,122,0,0.25)] backdrop-blur">
+          <div className="flex justify-end mb-4">
+            <Link
+              href="/"
+              className="px-4 py-2 bg-cope-orange bg-opacity-20 hover:bg-opacity-30 text-cope-orange font-semibold rounded-lg transition border border-cope-orange border-opacity-40"
+            >
+              Home
+            </Link>
+          </div>
           <h1 className="text-4xl sm:text-5xl font-black text-white mb-6 tracking-tight">
             Welcome to COPE.
           </h1>
@@ -110,6 +119,14 @@ function WhitelistContent() {
     <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
       <div className="w-full max-w-2xl text-center">
         <header className="mb-8">
+          <div className="flex justify-end mb-4">
+            <Link
+              href="/"
+              className="px-4 py-2 bg-cope-orange bg-opacity-20 hover:bg-opacity-30 text-cope-orange font-semibold rounded-lg transition border border-cope-orange border-opacity-40"
+            >
+              Home
+            </Link>
+          </div>
           <div className="mb-6 flex justify-center">
             <img 
               src="/images/image.png" 

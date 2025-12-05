@@ -3,8 +3,8 @@ import './globals.css'
 import FloatingBackground from '@/components/FloatingBackground'
 
 export const metadata: Metadata = {
-  title: 'COPE PAIN Whitelist',
-  description: 'Join the COPE PAIN Whitelist and rank up through referrals',
+  title: 'COPE - From Pain to Movement',
+  description: '$COPE is Live on BNB-chain, transforming losses into laughter, setbacks into shared wisdom, and collective pain into a movement spreading hope, smiles, and pure WTF energy across Web3.',
 }
 
 export default function RootLayout({
