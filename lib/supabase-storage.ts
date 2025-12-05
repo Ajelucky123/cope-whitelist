@@ -15,7 +15,8 @@ function mapUser(row: any): User {
     walletAddress: row.wallet_address,
     referralCode: row.referral_code,
     referredBy: row.referred_by,
-    referralCount: row.referral_count,
+    // Ensure we never surface undefined/null and coerce to a number
+    referralCount: Number(row.referral_count ?? 0),
     createdAt: row.created_at,
   }
 }
@@ -452,7 +453,9 @@ export async function getLeaderboard(limit: number = 10000): Promise<User[]> {
 
     if (usersError) {
       console.error('Error fetching users:', usersError)
-      return []
+      // Fall back to file storage so the leaderboard still works without Supabase
+      const { getLeaderboard: getLeaderboardFile } = await import('./server-storage')
+      return getLeaderboardFile(limit)
     }
 
     // Get all referrals to calculate accurate counts

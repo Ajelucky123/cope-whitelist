@@ -1,83 +1,122 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from "react";
+import type { CSSProperties } from "react";
+import { useRouter } from "next/navigation";
 
 interface LeaderboardEntry {
-  rank: number
-  walletAddress: string
-  referralCount: number
-  tier: string
-  joinedAt: string
+  rank: number;
+  walletAddress: string;
+  referralCount: number;
+  tier: string;
+  joinedAt: string;
 }
 
 export default function Leaderboard() {
-  const router = useRouter()
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const router = useRouter();
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
         // Add cache-busting parameter and no-cache headers to ensure fresh data
         const response = await fetch(`/api/leaderboard?t=${Date.now()}`, {
-          cache: 'no-store',
+          cache: "no-store",
           headers: {
-            'Cache-Control': 'no-cache',
+            "Cache-Control": "no-cache",
           },
-        })
+        });
+
         if (!response.ok) {
-          throw new Error('Failed to fetch leaderboard')
+          throw new Error("Failed to fetch leaderboard");
         }
-        const data = await response.json()
-        setLeaderboard(data.leaderboard || [])
-        setError(null)
+
+        const data = await response.json();
+        setLeaderboard(data.leaderboard || []);
+        setError(null);
       } catch (err: any) {
-        setError(err.message || 'Failed to load leaderboard')
+        setError(err.message || "Failed to load leaderboard");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
     // Initial fetch
-    fetchLeaderboard()
+    fetchLeaderboard();
 
     // Set up auto-refresh every 5 minutes (300,000 milliseconds)
     const interval = setInterval(() => {
-      fetchLeaderboard()
-    }, 5 * 60 * 1000)
+      fetchLeaderboard();
+    }, 5 * 60 * 1000);
 
     // Cleanup interval on unmount
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
   const truncateAddress = (address: string) => {
-    if (address.length <= 10) return address
-    return `${address.slice(0, 6)}...${address.slice(-4)}`
-  }
+    if (!address) return "";
+    if (address.length <= 10) return address;
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
-  }
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
 
-  const getRankBadgeColor = (rank: number) => {
-    if (rank === 1) return 'from-yellow-400 to-yellow-600'
-    if (rank === 2) return 'from-gray-300 to-gray-500'
-    if (rank === 3) return 'from-orange-400 to-orange-600'
-    return 'from-cope-orange to-cope-orange-light'
-  }
+  const getTierStyles = (tier: string): CSSProperties => {
+    switch (tier) {
+      case "Tourist":
+        return {
+          backgroundColor: "#F9E87B",
+          color: "#0A0A0A",
+          borderColor: "#F9E87B",
+        };
+      case "Survivor":
+        return {
+          backgroundColor: "#D97A27",
+          color: "#FFFFFF",
+          borderColor: "#D97A27",
+        };
+      case "Pain Holder":
+        return {
+          backgroundColor: "#B10024",
+          color: "#FFFFFF",
+          borderColor: "#B10024",
+        };
+      case "Cope Lord":
+        return {
+          backgroundColor: "#6A0DAD",
+          color: "#FFFFFF",
+          borderColor: "#6A0DAD",
+        };
+      case "Peak Cope":
+        return {
+          backgroundColor: "#0A0A0A",
+          color: "#29F3FF",
+          borderColor: "#29F3FF",
+        };
+      default:
+        return {
+          backgroundColor: "#1F2933", // fallback gray
+          color: "#D1D5DB",
+          borderColor: "#374151",
+        };
+    }
+  };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-gray-400">Loading leaderboard...</div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -86,14 +125,14 @@ export default function Leaderboard() {
         <div className="text-center">
           <p className="text-red-400 mb-4">{error}</p>
           <button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push("/dashboard")}
             className="px-6 py-3 bg-gradient-to-r from-cope-orange to-cope-orange-light text-white font-bold rounded-lg hover:opacity-90 transition"
           >
             Back to Dashboard
           </button>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -103,9 +142,7 @@ export default function Leaderboard() {
           <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-cope-orange to-cope-orange-light bg-clip-text text-transparent">
             COPE Pain Leaderboard
           </h1>
-          <p className="text-gray-400 text-lg">
-            Ranking the Survivors
-          </p>
+          <p className="text-gray-400 text-lg">Ranking the Survivors</p>
         </header>
 
         {leaderboard.length === 0 ? (
@@ -131,7 +168,14 @@ export default function Leaderboard() {
                   <div className="text-lg font-bold text-white mb-1">
                     {leaderboard[1].referralCount}
                   </div>
-                  <div className="text-xs text-gray-500">{leaderboard[1].tier}</div>
+                  <div className="mt-1 flex justify-center">
+                    <div
+                      className="px-3 py-1 rounded-lg text-xs font-semibold border"
+                      style={getTierStyles(leaderboard[1].tier)}
+                    >
+                      {leaderboard[1].tier}
+                    </div>
+                  </div>
                 </div>
 
                 {/* 1st Place */}
@@ -146,7 +190,14 @@ export default function Leaderboard() {
                   <div className="text-xl font-bold text-white mb-1">
                     {leaderboard[0].referralCount}
                   </div>
-                  <div className="text-xs text-yellow-400 font-semibold">{leaderboard[0].tier}</div>
+                  <div className="mt-1 flex justify-center">
+                    <div
+                      className="px-3 py-1 rounded-lg text-xs font-semibold border"
+                      style={getTierStyles(leaderboard[0].tier)}
+                    >
+                      {leaderboard[0].tier}
+                    </div>
+                  </div>
                 </div>
 
                 {/* 3rd Place */}
@@ -161,7 +212,14 @@ export default function Leaderboard() {
                   <div className="text-lg font-bold text-white mb-1">
                     {leaderboard[2].referralCount}
                   </div>
-                  <div className="text-xs text-gray-500">{leaderboard[2].tier}</div>
+                  <div className="mt-1 flex justify-center">
+                    <div
+                      className="px-3 py-1 rounded-lg text-xs font-semibold border"
+                      style={getTierStyles(leaderboard[2].tier)}
+                    >
+                      {leaderboard[2].tier}
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -173,16 +231,12 @@ export default function Leaderboard() {
                   key={index}
                   className={`flex items-center gap-4 p-4 rounded-lg border ${
                     entry.rank <= 3
-                      ? 'bg-gradient-to-r from-gray-800 to-gray-900 border-cope-orange border-opacity-20'
-                      : 'bg-black bg-opacity-40 border-gray-800 border-opacity-30'
+                      ? "bg-gradient-to-r from-gray-800 to-gray-900 border-cope-orange border-opacity-20"
+                      : "bg-black bg-opacity-40 border-gray-800 border-opacity-30"
                   } hover:border-cope-orange hover:border-opacity-40 transition`}
                 >
                   {/* Rank */}
-                  <div className={`text-2xl font-black w-12 text-center ${
-                    entry.rank <= 3
-                      ? `bg-gradient-to-r ${getRankBadgeColor(entry.rank)} bg-clip-text text-transparent`
-                      : 'text-gray-500'
-                  }`}>
+                  <div className="text-2xl font-black w-12 text-center text-gray-500">
                     #{entry.rank}
                   </div>
 
@@ -206,11 +260,10 @@ export default function Leaderboard() {
 
                   {/* Tier */}
                   <div className="text-right">
-                    <div className={`px-3 py-1 rounded-lg text-sm font-semibold ${
-                      entry.rank <= 3
-                        ? 'bg-cope-orange bg-opacity-20 text-cope-orange'
-                        : 'bg-gray-800 text-gray-400'
-                    }`}>
+                    <div
+                      className="px-3 py-1 rounded-lg text-sm font-semibold border"
+                      style={getTierStyles(entry.tier)}
+                    >
                       {entry.tier}
                     </div>
                   </div>
@@ -223,7 +276,7 @@ export default function Leaderboard() {
         {/* Navigation */}
         <div className="mt-6 flex justify-center">
           <button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push("/dashboard")}
             className="px-6 py-3 bg-gradient-to-r from-cope-orange to-cope-orange-light text-white font-bold rounded-lg hover:opacity-90 transition"
           >
             Back to Dashboard
@@ -231,6 +284,5 @@ export default function Leaderboard() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
