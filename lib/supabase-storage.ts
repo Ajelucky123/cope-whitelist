@@ -15,7 +15,8 @@ function mapUser(row: any): User {
     walletAddress: row.wallet_address,
     referralCode: row.referral_code,
     referredBy: row.referred_by,
-    referralCount: row.referral_count,
+    // Ensure we never surface undefined/null and coerce to a number
+    referralCount: Number(row.referral_count ?? 0),
     createdAt: row.created_at,
   }
 }
@@ -333,7 +334,9 @@ export async function getLeaderboard(limit: number = 100): Promise<User[]> {
 
     if (error) {
       console.error('Error fetching leaderboard:', error)
-      return []
+      // Fall back to file storage so the leaderboard still works without Supabase
+      const { getLeaderboard: getLeaderboardFile } = await import('./server-storage')
+      return getLeaderboardFile(limit)
     }
 
     return (data || []).map(mapUser)
