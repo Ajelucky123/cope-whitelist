@@ -32,16 +32,32 @@ export async function POST(request: NextRequest) {
     // Check for referral code
     let referredBy: string | null = null
     if (referralCode) {
-      const referrer = await getUserByReferralCode(referralCode)
+      // Normalize referral code to uppercase (codes are stored in uppercase)
+      const normalizedCode = referralCode.trim().toUpperCase()
+      console.log(`Looking up referral code: "${normalizedCode}"`)
+      const referrer = await getUserByReferralCode(normalizedCode)
       if (referrer) {
         referredBy = referrer.id
+        console.log(`✓ Referral code found! User ${walletAddress} will be referred by ${referrer.id} (${referrer.walletAddress})`)
+      } else {
+        console.warn(`✗ Referral code "${normalizedCode}" not found in database`)
       }
+    } else {
+      console.log('No referral code provided')
     }
 
     // Create new user
+    console.log(`Creating user with wallet: ${walletAddress}, referredBy: ${referredBy || 'none'}`)
     const user = await createUser(walletAddress, referredBy)
 
-    return NextResponse.json({ user }, { status: 201 })
+    return NextResponse.json({ 
+      user,
+      referralInfo: {
+        hadReferralCode: !!referralCode,
+        referrerFound: !!referredBy,
+        referredBy: referredBy || null
+      }
+    }, { status: 201 })
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message || 'Internal server error' },
