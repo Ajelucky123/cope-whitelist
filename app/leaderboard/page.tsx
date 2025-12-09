@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface LeaderboardEntry {
   rank: number;
@@ -16,43 +17,59 @@ export default function Leaderboard() {
   const router = useRouter();
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchLeaderboard = async () => {
-      try {
-        // Add cache-busting parameter and no-cache headers to ensure fresh data
-        const response = await fetch(`/api/leaderboard?t=${Date.now()}`, {
-          cache: "no-store",
-          headers: {
-            "Cache-Control": "no-cache",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch leaderboard");
-        }
-
-        const data = await response.json();
-        setLeaderboard(data.leaderboard || []);
-        setError(null);
-      } catch (err: any) {
-        setError(err.message || "Failed to load leaderboard");
-      } finally {
-        setLoading(false);
+  const fetchLeaderboard = async (showRefreshing = false) => {
+    try {
+      if (showRefreshing) {
+        setRefreshing(true);
       }
-    };
+      // Add cache-busting parameter and no-cache headers to ensure fresh data
+      const response = await fetch(`/api/leaderboard?t=${Date.now()}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to fetch leaderboard");
+      }
+
+      const data = await response.json();
+      setLeaderboard(data.leaderboard || []);
+      setError(null);
+    } catch (err: any) {
+      setError(err.message || "Failed to load leaderboard");
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
     // Initial fetch
     fetchLeaderboard();
 
-    // Set up auto-refresh every 5 minutes (300,000 milliseconds)
+    // Set up auto-refresh every 30 seconds for real-time updates
     const interval = setInterval(() => {
       fetchLeaderboard();
-    }, 5 * 60 * 1000);
+    }, 30 * 1000);
 
-    // Cleanup interval on unmount
-    return () => clearInterval(interval);
+    // Refresh when page becomes visible again
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        fetchLeaderboard();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup interval and event listener on unmount
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const truncateAddress = (address: string) => {
@@ -113,23 +130,47 @@ export default function Leaderboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-400">Loading leaderboard...</div>
+      <div className="min-h-screen p-4 relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-end mb-4">
+            <Link
+              href="/"
+              className="px-4 py-2 bg-cope-orange bg-opacity-20 hover:bg-opacity-30 text-cope-orange font-semibold rounded-lg transition border border-cope-orange border-opacity-40"
+            >
+              Home
+            </Link>
+          </div>
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-gray-400">Loading leaderboard...</div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-red-400 mb-4">{error}</p>
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="px-6 py-3 bg-gradient-to-r from-cope-orange to-cope-orange-light text-white font-bold rounded-lg hover:opacity-90 transition"
-          >
-            Back to Dashboard
-          </button>
+      <div className="min-h-screen p-4 relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-end mb-4">
+            <Link
+              href="/"
+              className="px-4 py-2 bg-cope-orange bg-opacity-20 hover:bg-opacity-30 text-cope-orange font-semibold rounded-lg transition border border-cope-orange border-opacity-40"
+            >
+              Home
+            </Link>
+          </div>
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-center">
+              <p className="text-red-400 mb-4">{error}</p>
+              <button
+                onClick={() => router.push("/dashboard")}
+                className="px-6 py-3 bg-gradient-to-r from-cope-orange to-cope-orange-light text-white font-bold rounded-lg hover:opacity-90 transition"
+              >
+                Back to Dashboard
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -139,10 +180,34 @@ export default function Leaderboard() {
     <div className="min-h-screen p-4 relative z-10">
       <div className="max-w-4xl mx-auto">
         <header className="text-center mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <button
+              onClick={() => fetchLeaderboard(true)}
+              disabled={refreshing}
+              className="px-4 py-2 bg-cope-orange bg-opacity-20 hover:bg-opacity-30 text-cope-orange font-semibold rounded-lg transition border border-cope-orange border-opacity-40 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              <svg 
+                className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              {refreshing ? 'Refreshing...' : 'Refresh'}
+            </button>
+            <Link
+              href="/"
+              className="px-4 py-2 bg-cope-orange bg-opacity-20 hover:bg-opacity-30 text-cope-orange font-semibold rounded-lg transition border border-cope-orange border-opacity-40"
+            >
+              Home
+            </Link>
+          </div>
           <h1 className="text-5xl font-black mb-4 bg-gradient-to-r from-cope-orange to-cope-orange-light bg-clip-text text-transparent">
             COPE Pain Leaderboard
           </h1>
           <p className="text-gray-400 text-lg">Ranking the Survivors</p>
+          <p className="text-gray-500 text-sm mt-2">Auto-refreshes every 30 seconds</p>
         </header>
 
         {leaderboard.length === 0 ? (

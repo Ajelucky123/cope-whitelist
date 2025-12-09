@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface WalletEntryProps {
   onWalletSubmitted: (address: string) => void
@@ -8,8 +8,17 @@ interface WalletEntryProps {
 
 export default function WalletEntry({ onWalletSubmitted }: WalletEntryProps) {
   const [walletAddress, setWalletAddress] = useState('')
+  const [referralCode, setReferralCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  // Load referral code from localStorage on mount (from URL params)
+  useEffect(() => {
+    const storedRefCode = localStorage.getItem('cope_referral_code')
+    if (storedRefCode) {
+      setReferralCode(storedRefCode)
+    }
+  }, [])
 
   const validateEVMAddress = (address: string): boolean => {
     return /^0x[a-fA-F0-9]{40}$/.test(address)
@@ -32,8 +41,13 @@ export default function WalletEntry({ onWalletSubmitted }: WalletEntryProps) {
     setLoading(true)
 
     try {
-      // Get referral code from localStorage if exists
-      const referralCode = localStorage.getItem('cope_referral_code')
+      // Use referral code from input, or fallback to localStorage
+      const codeToUse = referralCode.trim() || localStorage.getItem('cope_referral_code') || null
+      
+      // Save to localStorage if provided
+      if (referralCode.trim()) {
+        localStorage.setItem('cope_referral_code', referralCode.trim().toUpperCase())
+      }
       
       const response = await fetch('/api/registerWallet', {
         method: 'POST',
@@ -42,7 +56,7 @@ export default function WalletEntry({ onWalletSubmitted }: WalletEntryProps) {
         },
         body: JSON.stringify({ 
           walletAddress,
-          referralCode: referralCode || null,
+          referralCode: codeToUse,
         }),
       })
 
@@ -67,11 +81,18 @@ export default function WalletEntry({ onWalletSubmitted }: WalletEntryProps) {
         Enter Your EVM Wallet
       </h2>
       <p className="text-gray-400 text-center mb-6">
-        Enter your EVM wallet to join the COPE PAIN Whitelist.
+        Enter your EVM/BNB wallet address to join the COPE PAIN Whitelist. No rewards. No tokens. No bribes. This is pure identity.
       </p>
+      <div className="bg-black bg-opacity-40 border border-gray-800 rounded-xl p-4 text-sm text-gray-400 mb-6 leading-relaxed">
+        <p>Your wallet address is used only to identify you. COPE never asks for private keys.</p>
+        <p className="mt-2 text-gray-500">If someone does, they’re coping harder than you.</p>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
+          <label className="block text-sm font-semibold text-gray-300 mb-2">
+            Wallet Address
+          </label>
           <input
             type="text"
             value={walletAddress}
@@ -79,10 +100,30 @@ export default function WalletEntry({ onWalletSubmitted }: WalletEntryProps) {
             placeholder="0x..."
             className="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cope-orange focus:border-opacity-40 focus:ring-2 focus:ring-cope-orange focus:ring-opacity-20"
           />
-          {error && (
-            <p className="text-red-400 text-sm mt-2">{error}</p>
-          )}
         </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-300 mb-2">
+            Referral Code (Optional)
+          </label>
+          <input
+            type="text"
+            value={referralCode}
+            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+            placeholder="Enter referral code"
+            className="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cope-orange focus:border-opacity-40 focus:ring-2 focus:ring-cope-orange focus:ring-opacity-20 uppercase"
+            maxLength={8}
+          />
+          <p className="text-gray-500 text-xs mt-1">
+            Enter a referral code if someone invited you (optional)
+          </p>
+        </div>
+
+        {error && (
+          <div className="bg-red-900 bg-opacity-20 border border-red-500 border-opacity-30 rounded-lg p-3">
+            <p className="text-red-400 text-sm">{error}</p>
+          </div>
+        )}
 
         <button
           type="submit"

@@ -1,8 +1,15 @@
 "use client";
 
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getRank, type User } from "@/lib/storage";
+=======
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { getRank, type User } from '@/lib/storage'
+>>>>>>> d3ae4d682b35b373c3081655260d2875ed72ce29
 
 export default function Dashboard() {
   const router = useRouter();
@@ -53,8 +60,20 @@ export default function Dashboard() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
+      <div className="min-h-screen p-4 relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-end mb-4">
+            <Link
+              href="/"
+              className="px-4 py-2 bg-cope-orange bg-opacity-20 hover:bg-opacity-30 text-cope-orange font-semibold rounded-lg transition border border-cope-orange border-opacity-40"
+            >
+              Home
+            </Link>
+          </div>
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-gray-400">Loading...</div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -66,6 +85,14 @@ export default function Dashboard() {
     <div className="min-h-screen p-4 relative z-10">
       <div className="max-w-4xl mx-auto">
         <header className="text-center mb-8">
+          <div className="flex justify-end mb-4">
+            <Link
+              href="/"
+              className="px-4 py-2 bg-cope-orange bg-opacity-20 hover:bg-opacity-30 text-cope-orange font-semibold rounded-lg transition border border-cope-orange border-opacity-40"
+            >
+              Home
+            </Link>
+          </div>
           <h1 className="text-4xl font-black mb-4 bg-gradient-to-r from-cope-orange to-cope-orange-light bg-clip-text text-transparent">
             Your Pain Rank
           </h1>
