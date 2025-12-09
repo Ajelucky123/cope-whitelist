@@ -1,15 +1,9 @@
 "use client";
 
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { getRank, type User } from "@/lib/storage";
-=======
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { getRank, type User } from '@/lib/storage'
->>>>>>> d3ae4d682b35b373c3081655260d2875ed72ce29
 
 export default function Dashboard() {
   const router = useRouter();
