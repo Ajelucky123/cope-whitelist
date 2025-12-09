@@ -1,4 +1,4 @@
-import { getSupabaseClient } from './supabase'
+import { getSupabaseClient, getSupabaseAdminClient } from './supabase'
 import type { User, Referral } from './storage'
 
 // Check if Supabase is configured
@@ -81,7 +81,8 @@ export async function saveUser(user: User): Promise<User | null> {
   }
 
   try {
-    const supabase = getSupabaseClient()
+    // Use admin client for writes to bypass RLS
+    const supabase = getSupabaseAdminClient()
     const userRow = mapUserToRow(user)
     const { data, error } = await supabase
       .from('users')
@@ -290,7 +291,8 @@ export async function saveReferral(referral: Referral): Promise<Referral | null>
   }
 
   try {
-    const supabase = getSupabaseClient()
+    // Use admin client for writes to bypass RLS
+    const supabase = getSupabaseAdminClient()
     const referralRow = {
       id: referral.id,
       referrer_id: referral.referrerId,

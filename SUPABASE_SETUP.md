@@ -20,12 +20,16 @@ Create a `.env.local` file in your project root:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 ```
 
 You can find these in:
 - Supabase Dashboard → Settings → API
 - Project URL: Under "Project URL"
 - Anon Key: Under "Project API keys" → `anon` `public`
+- Service Role Key: Under "Project API keys" → `service_role` `secret` (⚠️ Keep this secret!)
+
+**Important**: The service role key is required for production deployments (like Vercel) because it bypasses Row Level Security (RLS) for server-side operations like updating referral counts. Never expose this key to the client-side code.
 
 ## Step 4: Install Dependencies
 
