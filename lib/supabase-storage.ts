@@ -1,4 +1,4 @@
-import { getSupabaseClient } from './supabase'
+import { getSupabaseClient, getSupabaseAdminClient } from './supabase'
 import type { User, Referral } from './storage'
 
 // Check if Supabase is configured
@@ -81,7 +81,8 @@ export async function saveUser(user: User): Promise<User | null> {
   }
 
   try {
-    const supabase = getSupabaseClient()
+    // Use admin client for writes to bypass RLS
+    const supabase = getSupabaseAdminClient()
     const userRow = mapUserToRow(user)
     const { data, error } = await supabase
       .from('users')
@@ -176,7 +177,9 @@ export async function getUserByWallet(walletAddress: string): Promise<User | nul
       // Also update the database if count differs (in case trigger didn't fire)
       if (user.referralCount !== data.referral_count) {
         console.log(`Updating referral_count for ${user.id}: ${data.referral_count} -> ${user.referralCount}`)
-        await supabase
+        // Use admin client for writes to bypass RLS
+        const supabaseAdmin = getSupabaseAdminClient()
+        await supabaseAdmin
           .from('users')
           .update({ referral_count: user.referralCount })
           .eq('id', user.id)
@@ -308,9 +311,10 @@ export async function createUser(
             const actualCount = referrals?.length || 0
             console.log(`Found ${actualCount} total referrals for referrer ${referredBy}`)
             
-            // Update the count directly
+            // Update the count directly - use admin client for writes to bypass RLS
             console.log(`Updating referral_count in users table to ${actualCount}...`)
-            const { data: updateData, error: updateError } = await supabase
+            const supabaseAdmin = getSupabaseAdminClient()
+            const { data: updateData, error: updateError } = await supabaseAdmin
               .from('users')
               .update({ referral_count: actualCount })
               .eq('id', referredBy)
@@ -381,7 +385,8 @@ export async function saveReferral(referral: Referral): Promise<Referral | null>
   }
 
   try {
-    const supabase = getSupabaseClient()
+    // Use admin client for writes to bypass RLS
+    const supabase = getSupabaseAdminClient()
     const referralRow = {
       id: referral.id,
       referrer_id: referral.referrerId,
