@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
 
 interface LeaderboardEntry {
   rank: number;
@@ -17,44 +18,90 @@ export default function Leaderboard() {
   const router = useRouter();
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchLeaderboard = async () => {
-      try {
-        // Add cache-busting parameter and no-cache headers to ensure fresh data
-        const response = await fetch(`/api/leaderboard?t=${Date.now()}`, {
-          cache: "no-store",
-          headers: {
-            "Cache-Control": "no-cache",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch leaderboard");
-        }
-
-        const data = await response.json();
-        setLeaderboard(data.leaderboard || []);
-        setError(null);
-      } catch (err: any) {
-        setError(err.message || "Failed to load leaderboard");
-      } finally {
-        setLoading(false);
+  const fetchLeaderboard = useCallback(async (showRefreshing = false) => {
+    try {
+      if (showRefreshing) {
+        setRefreshing(true);
       }
-    };
+      // Add cache-busting parameter and no-cache headers to ensure fresh data
+      const response = await fetch(`/api/leaderboard?t=${Date.now()}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to fetch leaderboard");
+      }
+
+      const data = await response.json();
+      setLeaderboard(data.leaderboard || []);
+      setError(null);
+    } catch (err: any) {
+      setError(err.message || "Failed to load leaderboard");
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, []);
+
+  useEffect(() => {
     // Initial fetch
     fetchLeaderboard();
 
-    // Set up auto-refresh every 5 minutes (300,000 milliseconds)
+    // Set up auto-refresh every 30 seconds for real-time updates
     const interval = setInterval(() => {
       fetchLeaderboard();
-    }, 5 * 60 * 1000);
+    }, 30 * 1000);
 
-    // Cleanup interval on unmount
-    return () => clearInterval(interval);
-  }, []);
+    // Refresh when page becomes visible again
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        fetchLeaderboard();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup interval and event listener on unmount
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [fetchLeaderboard]);
+
+  useEffect(() => {
+    // Subscribe to Supabase changes so new users/referrals update instantly
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseKey) return;
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    const handleRealtimeUpdate = () => fetchLeaderboard(true);
+
+    const channel = supabase
+      .channel("leaderboard-realtime")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "users" },
+        handleRealtimeUpdate
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "referrals" },
+        handleRealtimeUpdate
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+      supabase.removeChannel(channel);
+    };
+  }, [fetchLeaderboard]);
+>>>>>>> bae4aa7 (chore: save local changes before pull)
 
   const truncateAddress = (address: string) => {
     if (!address) return "";

@@ -1,9 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 export default function Home() {
+  const searchParams = useSearchParams()
   const [copied, setCopied] = useState(false)
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -15,6 +17,15 @@ export default function Home() {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
+
+  // Capture referral code from the landing page (?ref=CODE) and persist it
+  useEffect(() => {
+    const ref = searchParams.get('ref')
+    if (ref) {
+      const normalized = ref.trim().toUpperCase()
+      localStorage.setItem('cope_referral_code', normalized)
+    }
+  }, [searchParams])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -62,6 +73,14 @@ export default function Home() {
               >
                 HOW TO BUY
               </button>
+              <a
+                href="https://forms.gle/qUCrPJF3aZ6m9WaZ9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition"
+              >
+                PRESALE
+              </a>
               <Link
                 href="/whitelist"
                 target="_blank"
@@ -114,6 +133,15 @@ export default function Home() {
             >
               HOW TO BUY
             </button>
+            <a
+              href="https://forms.gle/qUCrPJF3aZ6m9WaZ9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-left px-4 py-2 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition inline-block"
+              onClick={() => setMobileOpen(false)}
+            >
+              PRESALE
+            </a>
             <Link
               href="/whitelist"
               target="_blank"
@@ -170,6 +198,16 @@ export default function Home() {
               >
                 {copied ? 'Copied!' : 'Copy'}
               </button>
+            </div>
+            <div className="mb-10">
+              <a
+                href="https://forms.gle/qUCrPJF3aZ6m9WaZ9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-8 py-3 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition"
+              >
+                Presale Form
+              </a>
             </div>
 
             {/* Social Links */}

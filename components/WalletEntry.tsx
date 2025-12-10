@@ -42,11 +42,20 @@ export default function WalletEntry({ onWalletSubmitted }: WalletEntryProps) {
 
     try {
       // Use referral code from input, or fallback to localStorage
-      const codeToUse = referralCode.trim() || localStorage.getItem('cope_referral_code') || null
+      const codeFromInput = referralCode.trim()
+      const codeFromStorage = localStorage.getItem('cope_referral_code')
+      const codeToUse = codeFromInput || codeFromStorage || null
       
-      // Save to localStorage if provided
-      if (referralCode.trim()) {
-        localStorage.setItem('cope_referral_code', referralCode.trim().toUpperCase())
+      // Log for debugging
+      console.log('🔍 Referral code check:', {
+        fromInput: codeFromInput || '(empty)',
+        fromStorage: codeFromStorage || '(empty)',
+        willUse: codeToUse || '(none)'
+      })
+      
+      // Save to localStorage if provided in input
+      if (codeFromInput) {
+        localStorage.setItem('cope_referral_code', codeFromInput.toUpperCase())
       }
       
       const response = await fetch('/api/registerWallet', {
@@ -64,6 +73,24 @@ export default function WalletEntry({ onWalletSubmitted }: WalletEntryProps) {
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to register wallet')
+      }
+
+      // Log referral info for debugging
+      if (data.referralInfo) {
+        console.log('📊 Referral Info:', {
+          hadReferralCode: data.referralInfo.hadReferralCode,
+          referralCodeProvided: data.referralInfo.referralCodeProvided,
+          referrerFound: data.referralInfo.referrerFound,
+          referralCreated: data.referralInfo.referralCreated,
+          referralError: data.referralInfo.referralError
+        })
+        
+        if (codeToUse && !data.referralInfo.referrerFound) {
+          console.warn('⚠️ Referral code was provided but referrer was not found!')
+        }
+        if (data.referralInfo.referrerFound && !data.referralInfo.referralCreated) {
+          console.error('❌ Referrer was found but referral was NOT created!', data.referralInfo.referralError)
+        }
       }
 
       localStorage.setItem('cope_wallet_address', walletAddress)

@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server'
 import { getLeaderboard } from '@/lib/supabase-storage'
 import { getRank } from '@/lib/storage'
 
+// Always render dynamically so new joins/referrals show immediately
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function GET() {
   try {
     // Get ALL users (no limit) - show everyone who has joined
