@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         'cope-orange': '#ff7a00',
         'cope-orange-light': '#ffa500',
+        'bnb-yellow': '#fbbf24',
       },
     },
   },

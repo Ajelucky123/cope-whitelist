@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
 
 interface LeaderboardEntry {
   rank: number;
@@ -20,7 +21,7 @@ export default function Leaderboard() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchLeaderboard = async (showRefreshing = false) => {
+  const fetchLeaderboard = useCallback(async (showRefreshing = false) => {
     try {
       if (showRefreshing) {
         setRefreshing(true);
@@ -46,7 +47,7 @@ export default function Leaderboard() {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // Initial fetch
@@ -70,7 +71,36 @@ export default function Leaderboard() {
       clearInterval(interval);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, []);
+  }, [fetchLeaderboard]);
+
+  useEffect(() => {
+    // Subscribe to Supabase changes so new users/referrals update instantly
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseKey) return;
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    const handleRealtimeUpdate = () => fetchLeaderboard(true);
+
+    const channel = supabase
+      .channel("leaderboard-realtime")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "users" },
+        handleRealtimeUpdate
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "referrals" },
+        handleRealtimeUpdate
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+      supabase.removeChannel(channel);
+    };
+  }, [fetchLeaderboard]);
 
   const truncateAddress = (address: string) => {
     if (!address) return "";
