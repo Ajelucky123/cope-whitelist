@@ -101,7 +101,6 @@ export default function Leaderboard() {
       supabase.removeChannel(channel);
     };
   }, [fetchLeaderboard]);
->>>>>>> bae4aa7 (chore: save local changes before pull)
 
   const truncateAddress = (address: string) => {
     if (!address) return "";
