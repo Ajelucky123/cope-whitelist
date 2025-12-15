@@ -1,11 +1,22 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
-export default function Home() {
+function ReferralCapture() {
   const searchParams = useSearchParams()
+  useEffect(() => {
+    const ref = searchParams.get('ref')
+    if (ref) {
+      const normalized = ref.trim().toUpperCase()
+      localStorage.setItem('cope_referral_code', normalized)
+    }
+  }, [searchParams])
+  return null
+}
+
+export default function Home() {
   const [copied, setCopied] = useState(false)
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -19,14 +30,6 @@ export default function Home() {
   }
 
   // Capture referral code from the landing page (?ref=CODE) and persist it
-  useEffect(() => {
-    const ref = searchParams.get('ref')
-    if (ref) {
-      const normalized = ref.trim().toUpperCase()
-      localStorage.setItem('cope_referral_code', normalized)
-    }
-  }, [searchParams])
-
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -39,6 +42,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white relative z-10">
+      {/* Capture referral code safely under Suspense for useSearchParams */}
+      <Suspense fallback={null}>
+        <ReferralCapture />
+      </Suspense>
       {/* Header Navigation */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 backdrop-blur-sm border-b border-cope-orange border-opacity-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
