@@ -90,8 +90,6 @@ export default function Home() {
               </a>
               <Link
                 href="/whitelist"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="px-6 py-2 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition"
               >
                 WHITELIST
@@ -151,8 +149,6 @@ export default function Home() {
             </a>
             <Link
               href="/whitelist"
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-left px-4 py-2 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition inline-block"
               onClick={() => setMobileOpen(false)}
             >
@@ -451,8 +447,6 @@ export default function Home() {
 
           <Link
             href="/whitelist"
-            target="_blank"
-            rel="noopener noreferrer"
             className="inline-block px-10 py-4 bg-gradient-to-r from-cope-orange to-cope-orange-light text-black font-semibold rounded-2xl hover:opacity-90 transition text-xl shadow-[0_0_30px_rgba(255,122,0,0.4)]"
           >
             JOIN COPE PAIN WHITELIST
