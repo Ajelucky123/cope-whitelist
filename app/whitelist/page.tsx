@@ -1,37 +1,8 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 
-const LAUNCH_DATE = new Date('2025-12-18T00:00:00Z')
-
 export default function WhitelistClosed() {
-  const [timeLeft, setTimeLeft] = useState<string>('Calculating...')
-
-  const calculateTimeLeft = useMemo(
-    () => () => {
-      const now = new Date().getTime()
-      const target = LAUNCH_DATE.getTime()
-      const diff = target - now
-      if (diff <= 0) return 'Launching now!'
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24)
-      const minutes = Math.floor((diff / (1000 * 60)) % 60)
-      const seconds = Math.floor((diff / 1000) % 60)
-
-      return `${days}d ${hours}h ${minutes}m ${seconds}s`
-    },
-    []
-  )
-
-  useEffect(() => {
-    setTimeLeft(calculateTimeLeft())
-    const interval = setInterval(() => {
-      setTimeLeft(calculateTimeLeft())
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [calculateTimeLeft])
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-black text-white relative z-10">
@@ -67,9 +38,18 @@ export default function WhitelistClosed() {
             </div>
 
             <div className="bg-black bg-opacity-40 border border-cope-orange border-opacity-30 rounded-2xl p-5">
-              <p className="text-sm text-gray-400 mb-2">Countdown to launch</p>
-              <div className="text-3xl sm:text-4xl font-black text-cope-orange">{timeLeft}</div>
+              <p className="text-sm text-gray-400 mb-2">Token Status</p>
+              <div className="text-3xl sm:text-4xl font-black text-cope-orange">Token is Live</div>
             </div>
+
+            <a
+              href="https://pancakeswap.finance/swap?chain=bsc&inputCurrency=BNB&outputCurrency=0x14EB783EE20eD7970Ad5e008044002d2c71D9148"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block w-full px-8 py-4 bg-white text-black font-bold rounded-xl hover:opacity-90 transition text-center text-lg"
+            >
+              Buy Now
+            </a>
           </div>
         </div>
       </div>
