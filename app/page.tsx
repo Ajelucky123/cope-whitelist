@@ -21,7 +21,7 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  const contractAddress = 'CA - coming soon' // Replace with actual contract
+  const contractAddress = '0x14EB783EE20eD7970Ad5e008044002d2c71D9148'
 
   const copyContract = () => {
     navigator.clipboard.writeText(contractAddress)
@@ -80,14 +80,6 @@ export default function Home() {
               >
                 HOW TO BUY
               </button>
-              <a
-                href="https://forms.gle/qUCrPJF3aZ6m9WaZ9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-2 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition"
-              >
-                PRESALE
-              </a>
               <Link
                 href="/whitelist"
                 className="px-6 py-2 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition"
@@ -95,7 +87,7 @@ export default function Home() {
                 WHITELIST
               </Link>
               <button
-                onClick={() => window.open('https://pancakeswap.finance', '_blank')}
+                onClick={() => window.open('https://pancakeswap.finance/swap?chain=bsc&inputCurrency=BNB&outputCurrency=0x14EB783EE20eD7970Ad5e008044002d2c71D9148', '_blank')}
                 className="px-6 py-2 bg-white text-black font-bold rounded-lg hover:opacity-90 transition"
               >
                 BUY NOW
@@ -138,15 +130,6 @@ export default function Home() {
             >
               HOW TO BUY
             </button>
-            <a
-              href="https://forms.gle/qUCrPJF3aZ6m9WaZ9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-left px-4 py-2 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition inline-block"
-              onClick={() => setMobileOpen(false)}
-            >
-              PRESALE
-            </a>
             <Link
               href="/whitelist"
               className="text-left px-4 py-2 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition inline-block"
@@ -157,7 +140,7 @@ export default function Home() {
             <button
               onClick={() => {
                 setMobileOpen(false)
-                window.open('https://pancakeswap.finance', '_blank')
+                window.open('https://pancakeswap.finance/swap?chain=bsc&inputCurrency=BNB&outputCurrency=0x14EB783EE20eD7970Ad5e008044002d2c71D9148', '_blank')
               }}
               className="text-left px-4 py-2 bg-white text-black font-bold rounded-lg hover:opacity-90 transition inline-block"
             >
@@ -204,12 +187,12 @@ export default function Home() {
             </div>
             <div className="mb-10">
               <a
-                href="https://forms.gle/qUCrPJF3aZ6m9WaZ9"
+                href="https://pancakeswap.finance/swap?chain=bsc&inputCurrency=BNB&outputCurrency=0x14EB783EE20eD7970Ad5e008044002d2c71D9148"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-8 py-3 bg-cope-orange text-black font-bold rounded-lg hover:opacity-90 transition"
               >
-                Presale Form
+                Buy Now
               </a>
             </div>
 
@@ -225,7 +208,7 @@ export default function Home() {
                   <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                 </svg>
               </a>
-              <a href="https://dexscreener.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-cope-orange transition">
+              <a href="https://dexscreener.com/bsc/0x14EB783EE20eD7970Ad5e008044002d2c71D9148" target="_blank" rel="noopener noreferrer" className="text-white hover:text-cope-orange transition">
                 <img 
                   src="/images/dex-screener-logo.png" 
                   alt="DexScreener" 
@@ -343,11 +326,11 @@ export default function Home() {
                 <div className="grid grid-cols-2 gap-4 mt-6">
                   <div className="bg-cope-orange bg-opacity-20 p-4 rounded-lg border border-cope-orange border-opacity-40 text-center">
                     <div className="text-sm font-semibold text-gray-300 mb-2">BUY TAX</div>
-                    <div className="text-2xl font-semibold text-cope-orange">5%</div>
+                    <div className="text-2xl font-semibold text-cope-orange">7%</div>
                   </div>
                   <div className="bg-cope-orange bg-opacity-20 p-4 rounded-lg border border-cope-orange border-opacity-40 text-center">
                     <div className="text-sm font-semibold text-gray-300 mb-2">SELL TAX</div>
-                    <div className="text-2xl font-semibold text-cope-orange">5%</div>
+                    <div className="text-2xl font-semibold text-cope-orange">6%</div>
                   </div>
                 </div>
                 <p className="text-sm font-semibold text-gray-400 mt-4 text-center">
@@ -403,7 +386,7 @@ export default function Home() {
                 />
                 <div className="mt-6 flex justify-center">
                   <button
-                    onClick={() => window.open('https://pancakeswap.finance', '_blank')}
+                    onClick={() => window.open('https://pancakeswap.finance/swap?chain=bsc&inputCurrency=BNB&outputCurrency=0x14EB783EE20eD7970Ad5e008044002d2c71D9148', '_blank')}
                     className="px-8 py-4 bg-white text-black font-bold rounded-xl hover:opacity-90 transition flex items-center gap-3"
                   >
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
