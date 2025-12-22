@@ -334,7 +334,7 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-sm font-semibold text-gray-400 mt-4 text-center">
-                  Auto buy back & burn every month.
+                  Auto burn.
                 </p>
               </div>
             </div>
